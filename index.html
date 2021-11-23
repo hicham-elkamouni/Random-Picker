@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="tailwind.css">
+  <title>Random Name Picker</title>
+</head>
+<body class="bg-gray-200">
+  <h1 class="text-3xl text-center font-bold tracking-widest m-10">RONDOM CHOICE PICKER</h1>
+  <section class="min-h-screen w-screen flex justify-center">
+    <div class="w-3/5 flex flex-col items-center justify-start">
+      
+      <div class="w-2/5 h-16 flex items-center justify-evenly mb-6">
+        <p class="font-semibold tracking-wider">Enter Number Of Students</p>
+        <input id="numberOfStudents"  class="h-3/5   w-16 px-2 rounded-md border-2 border-green-200 outline-none" type="number">
+      </div>
+
+      <div class="w-3/5 h-12 flex items-center justify-between mb-6">
+        <p class="">enter the date</p>
+        <input id="selectedDate" class="h-full w-2/5 text-center px-2 rounded-md border-2 border-green-200 outline-none"  type="date">
+      </div>
+      
+      <div class="w-3/5 h-12 flex items-center justify-between mb-6">
+        <input id="name" class="h-full w-2/5 px-2 rounded-md border-2 border-green-200 outline-none" type="text" placeholder="Enter student's full name">
+        <input id="subject" class="h-full w-2/5 px-2 rounded-md border-2 border-green-200 outline-none" type="text" placeholder="Enter student's subject">
+        <button id="add" class="bg-green-300 h-full w-12 text-3xl text-white rounded-md">+</button>
+      </div>
+      
+      <div id="studentsContainer" class=" studentsContainer w-3/5 h-40 px-2 py-4 bg-white shadow-md border-2 border-green-200 focus:ring-2 focus:ring-green-500 focus:outline-none focus:border-transparent rounded-md mb-10 overflow-auto ">
+  
+      </div>
+      
+      <button id="generate" class="bg-green-300 px-4 py-2  mb-10 text-xl text-white rounded-md">pick</button>
+  
+      <!-- <div class="container1">
+        <div class="one">1</div>
+        <div class="two">2</div>
+        <div class="three">3</div>
+        <div class="four">4</div>
+        <div class="five">5</div>
+        <div class="six">6</div>
+        <div class="seven">7</div>
+        <div class="eight">8</div>
+      </div> -->
+
+    </div>
+    <div class="w-4/12 bg-blue-200 flex flex-col justify-start">
+      <button id="exporter" class="bg-red-400 px-4 m-2 py-2 w-1/5  mb-10 text-xl text-white rounded-md" onclick="downloadCSV()">exporter<button>
+      <div id="SelectedStudentsContainer" class="p-2 rounded-md">
+        <h3 class="text-2xl font-bold">there's no student yet ... </h3>
+      </div>
+    </div>
+  </section>
+  
+  <script src="script.js"></script>
+</body>
+</html>
