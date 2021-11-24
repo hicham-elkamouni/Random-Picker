@@ -1,29 +1,26 @@
-const numberOfStudents = document.getElementById("numberOfStudents");
+"use strict";
 
-const name = document.getElementById("name");
+const name1 = document.getElementById("name");
 const subject = document.getElementById("subject");
 const add = document.getElementById("add");
 
 const studentsContainer = document.getElementById("studentsContainer");
-const SelectedStudentsContainer = document.getElementById(
-  "SelectedStudentsContainer"
-);
+const SelectedStudentsContainer = document.getElementById("SelectedStudentsContainer");
 
 const generate = document.getElementById("generate");
-const test = document.getElementById("test");
-
 const selectedDate = document.getElementById("selectedDate");
 
 let StdNamesSubjects = [];
 let SelectedStudents = [];
-
 let randomName;
 let indexOfRandomName;
 
+// GETTING RANDOM INDEX FROM ANN ARRAY
 function getRandomName(arr) {
   return (indexOfRandomName = Math.floor(Math.random() * arr.length));
 }
 
+//PICKING THE INSERTED STUDENTS AND SHOW THEM IN UI
 function fillingStudentNamesContainer() {
   StdNamesSubjects.forEach((std) => {
     const stdSpan = document.createElement("span");
@@ -33,7 +30,7 @@ function fillingStudentNamesContainer() {
   });
 }
 
-//filling selected students
+//PICKING THE SELECTED STUDENTS AND SHOW THEM IN UI
 function fillingSelectedStudentsContainer() {
   SelectedStudents.forEach((SelectedStd) => {
     const selectedStdSpan = document.createElement("span");
@@ -49,15 +46,32 @@ function fillingSelectedStudentsContainer() {
   });
 }
 
+// GETTING INPUT STUDENT'S NAME AND SUBJECT AND CHECK IF HIS NAME ALREADY EXIST
+let exist;
 add.addEventListener("click", () => {
-  let obj = {
-    name: name.value,
-    subject: subject.value,
-    date: "",
-  };
-
-  StdNamesSubjects.push(obj);
-
+  exist = false;
+  if (StdNamesSubjects.length < 1) {
+    let obj = {
+      name: name1.value,
+      subject: subject.value,
+      date: "",
+    };
+    StdNamesSubjects.push(obj);
+  } else {
+    StdNamesSubjects.forEach((element) => {
+      if (element.name == name1.value) {
+        exist = true;
+      }
+    });
+    if (exist == false) {
+      let obj = {
+        name: name1.value,
+        subject: subject.value,
+        date: "",
+      };
+      StdNamesSubjects.push(obj);
+    }
+  }
   studentsContainer.innerHTML = "";
 
   StdNamesSubjects.forEach((std) => {
@@ -75,8 +89,7 @@ let nextDay = 0;
 generate.addEventListener("click", function pickStudent() {
   getRandomName(StdNamesSubjects);
 
-  // getting date
-
+  
   let D2 = new Date(selectedDate.value);
   D2.setDate(D2.getDate() + nextDay);
 
@@ -84,77 +97,51 @@ generate.addEventListener("click", function pickStudent() {
   let mm = String(D2.getMonth() + 1).padStart(2, "0");
   let yyyy = D2.getFullYear();
 
-  let dateM9ada = dd + "/" + mm + "/" + yyyy;
+  let FormattedDate = dd + "/" + mm + "/" + yyyy;
   let DayName = D2.toString().split(" ")[0];
 
+  // CHECKING IF IT'S WEEKEND  
   if (DayName == "Sat") {
     nextDay += 2;
-    // generate.click()
     pickStudent();
   } else if (DayName == "Sun") {
     nextDay += 1;
-    // generate.click()
     pickStudent();
   } else {
-    
-    StdNamesSubjects[indexOfRandomName].date = `${dateM9ada}`;
+
+    StdNamesSubjects[indexOfRandomName].date = `${FormattedDate}`;
 
     SelectedStudents.push(StdNamesSubjects[indexOfRandomName]);
 
     StdNamesSubjects.splice(indexOfRandomName, 1);
 
     studentsContainer.innerHTML = "";
-    
+
     fillingStudentNamesContainer();
 
     SelectedStudentsContainer.innerHTML = "";
-    
+
     fillingSelectedStudentsContainer();
-    
+
     nextDay += 1;
   }
 });
 
-//download CSV
+// EXPORTING DATA AS CSV FILE
 const downloadCSV = () => {
-  let csvContent =
-    "data:text/csv;charset=utf-8," +
-    SelectedStudents.map((e) => [...Array.from(e)].join(",")).join("\n");
-  var encodedUri = encodeURI(csvContent);
-  window.open(encodedUri);
+  var csv = "Name,Subject,date\n";
+  newArr = [];
+  SelectedStudents.map((e) => newArr.push(Object.values(e)));
+  newArr.forEach(function (row) {
+    csv += row.join(",");
+    csv += "\n";
+  });
+
+  var hiddenElement = document.createElement("a");
+  hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv);
+  hiddenElement.target = "_blank";
+
+  //provide the name for the CSV file to be downloaded
+  hiddenElement.download = "Subjects By Order.csv";
+  hiddenElement.click();
 };
-
-// test.addEventListener('click', () => {
-  
-  //     console.warn('wow');
-
-  //     for (let i=0 ;i< SelectedStudents.length ; i++) {
-    //         date.setDate(date.getDate() + i);
-    
-    //         console.warn(date.getDate());
-    //     }
-
-    // })
-
-    // function getDynamicDate(){
-
-      //     let D2 = new Date(selectedDate);
-
-      //     D = D2.setDate(D2.getDate() + 1);
-      
-      //     let DayName = D.toString().split(' ')[0];
-      //     let DayNumber = D.getDate();
-//     let Month = D.getMonth() + 1;
-//     let Year = D.getFullYear();
-
-//     console.warn(DayName + " " + DayNumber + " " + Month + " " + Year);
-//     // let objDate = {
-//     //     day : DayNumber,
-//     //     month : Month,
-//     //     year : Year
-//     // }
-
-//     return D;
-// }
-
-// if(D2.getDay() == 6 || D2.getDay() == 0) alert('Weekend!');
